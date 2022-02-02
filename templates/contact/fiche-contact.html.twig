@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Fiche Contact{% endblock %}
+{% block title %}{{ parent() }} - Fiche Contact{% endblock %}
 
 {% block body %}
     <h1>Fiche Contact</h1>
@@ -11,7 +11,13 @@
             <div class="col-md-6">
             </div>
             <div class="col-md-6">
+            {# 
+                form is a variable passed from the controller via either
+                $this->renderForm('...', ['form' => $form])
+                or $this->render('...', ['form' => $form->createView()]) 
+            #}
                 {{ form_start(form) }}
+                {# render a field row #}
                     {{ form_row(form.name) }}
                     {{ form_row(form.firstname) }}
                     {{ form_row(form.email) }}
