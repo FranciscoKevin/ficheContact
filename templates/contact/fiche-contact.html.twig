@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche Contact{% endblock %}
+
+{% block body %}
+    <h1>Fiche Contact</h1>
+    <p>N'hésitez pas à prendre contact avec notre équipe, nous vous répondrons dans les meilleurs délais.</p>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
+                {{ form_start(form) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.firstname) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.department) }}
+                    {{ form_row(form.message) }}
+                    <div>
+                        <button type="submit" class="btn btn-success">Envoyer</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
