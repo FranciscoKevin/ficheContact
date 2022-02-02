@@ -41,7 +41,8 @@ class ContactType extends AbstractType
 
             ->add('department', null, [
                 'choice_label' => 'departmentName',
-                "label" => "Départements de l'entrprise",
+                'placeholder' => 'Choisissez un département entreprise',
+                "label" => "Départements de l'entreprise",
                 "attr" => [
                     "class" => 'form-check'
                 ],

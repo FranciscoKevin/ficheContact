@@ -50,6 +50,7 @@ class Contact
     private $message;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'contacts')]
+    #[Assert\NotNull]
     private $department;
 
     public function getId(): ?int
