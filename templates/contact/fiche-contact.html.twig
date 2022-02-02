@@ -7,27 +7,21 @@
     <p>N'hésitez pas à prendre contact avec notre équipe, nous vous répondrons dans les meilleurs délais.</p>
     
     <div class="container">
-        <div class="row">
-            <div class="col-md-6">
+        {# 
+            form is a variable passed from the controller via either
+            $this->renderForm('...', ['form' => $form])
+            or $this->render('...', ['form' => $form->createView()]) 
+        #}
+        {{ form_start(form) }}
+        {# render a field row #}
+            {{ form_row(form.name) }}
+            {{ form_row(form.firstname) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.department) }}
+            {{ form_row(form.message) }}
+            <div>
+                <button type="submit" class="btn btn-success">Envoyer</button>
             </div>
-            <div class="col-md-6">
-            {# 
-                form is a variable passed from the controller via either
-                $this->renderForm('...', ['form' => $form])
-                or $this->render('...', ['form' => $form->createView()]) 
-            #}
-                {{ form_start(form) }}
-                {# render a field row #}
-                    {{ form_row(form.name) }}
-                    {{ form_row(form.firstname) }}
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.department) }}
-                    {{ form_row(form.message) }}
-                    <div>
-                        <button type="submit" class="btn btn-success">Envoyer</button>
-                    </div>
-                {{ form_end(form) }}
-            </div>
-        </div>
+        {{ form_end(form) }}
     </div>
 {% endblock %}

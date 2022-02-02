@@ -21,7 +21,7 @@ class Company
     #[Assert\Length(
         min: 2,
         max: 50,
-        minMessage: 'Your department name; must be at least {{ limit }} characters long',
+        minMessage: 'Your department name must be at least {{ limit }} characters long',
         maxMessage: 'Your department name cannot be longer than {{ limit }} characters',
     )]
     private $departmentName;
