@@ -1,0 +1,40 @@
+{# This page displays all registered contacts #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Tous les contacts{% endblock %}
+
+{% block body %}
+    <h1>Les contacts enregistrer</h1>
+    {# Table #}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Adresse mail</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {# Loop on all contacts display retrieved data in controller #}
+        {% for contact in contacts %}
+            <tr>
+             {# variable twig used to display the data retrieved the informations #}
+                <td>{{ contact.id }}</td>
+                <td>{{ contact.firstname }} {{ contact.name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>
+                    <a class="btn btn-outline-primary" href="{{ path('contact_details', {'id': contact.id}) }}">En savoir plus</a>
+                </td>
+            </tr>
+        {% else %}
+        {# if no data display no record #}
+            <tr>
+                <td colspan="3">Aucun contact enregistrer</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# End Table #}
+    <a href="{{ path('home') }}">Retour</a>
+{% endblock %}
