@@ -21,15 +21,15 @@ class Company
     #[Assert\Length(
         min: 2,
         max: 50,
-        minMessage: 'Your department name must be at least {{ limit }} characters long',
-        maxMessage: 'Your department name cannot be longer than {{ limit }} characters',
+        minMessage: 'Le nom du département entreprise doit comporter au moins {{ limit }} caractères',
+        maxMessage: 'Le nom du département entreprise ne peut pas dépasser {{ limit }} caractères.',
     )]
     private $departmentName;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',
+        message: "L'e-mail {{ value }} n'est pas un e-mail valide.",
     )]
     private $email;
 
@@ -98,5 +98,14 @@ class Company
         }
 
         return $this;
+    }
+
+    /**
+     * This method transform an object in string
+     *
+     * @return string
+     */
+    public function __toString() {
+        return $this->getEmail();
     }
 }
