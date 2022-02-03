@@ -71,7 +71,7 @@ class ContactController extends AbstractController
             // Send mail
             $this->mailer->send($email);
 
-            $this->addFlash("message", "Votre mail à bien été envoyé. Merci de nous avoir contacté.");
+            $this->addFlash("success", "Votre mail à bien été envoyé. Merci de nous avoir contacté. Un arbre de plus sera planté grâce à vous!");
             return $this->redirectToRoute('home');
         }
 
