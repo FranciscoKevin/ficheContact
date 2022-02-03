@@ -21,7 +21,7 @@ class ContactController extends AbstractController
     private $entityManager;
 
     /**
-     * @var $mailer
+     * @var MailerInterface
      */
     private $mailer;
 
@@ -38,7 +38,7 @@ class ContactController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route('/fiche-contact', name: 'contact')]
+    #[Route('/fiche-contact', name: 'fiche_contact')]
     public function contact(Request $request): Response
     {
         // Set up a fresh $contact object 
@@ -71,12 +71,39 @@ class ContactController extends AbstractController
             // Send mail
             $this->mailer->send($email);
 
+            //Message flash after submit email
             $this->addFlash("success", "Votre mail à bien été envoyé. Merci de nous avoir contacté. Un arbre de plus sera planté grâce à vous!");
             return $this->redirectToRoute('home');
         }
 
         return $this->render('contact/fiche-contact.html.twig', [
             "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * This controller displays all registered contacts
+     *
+     * @return Response
+     */
+    #[Route('/contact/index', name: 'contact_index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->render('contact/index.html.twig', [
+            'contacts' => $this->entityManager->getRepository(Contact::class)->findAll(),
+        ]);
+    }
+
+    /**
+     * This controller displays the information of a single contact
+     *
+     * @return Response
+     */
+    #[Route('/contact/{id}', name: 'contact_details', methods: ['GET'])]
+    public function show(Contact $contact): Response
+    {
+        return $this->render('contact/details.html.twig', [
+            'contact' => $contact,
         ]);
     }
 }

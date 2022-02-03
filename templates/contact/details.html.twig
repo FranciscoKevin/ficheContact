@@ -1,0 +1,32 @@
+{# This page displays the information of a single contact #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Détails Fiche Contact{% endblock %}
+
+{% block body %}
+    <h1>Détails du contact</h1>
+
+    {# Table with informations #}
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th>Prénom</th>
+                {# Variable twig to display specific data about a Contact #}
+                <td>{{ contact.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ contact.name }}</td>
+            </tr>
+            <tr>
+                <th>Mail envoyé à</th>
+                <td>{{ contact.department }}</td>
+            </tr>
+            <tr>
+                <th>Message</th>
+                <td>{{ contact.message }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{{ path('contact_index') }}">Retour</a>
+{% endblock %}
