@@ -8,7 +8,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class CompanyFixtures extends Fixture
 {
-    // A multidimensional array with department name and email
     public const DEPARTMENT_OF_COMPANY = [
         'department_1' => [
             "name" => "Direction",
@@ -37,17 +36,12 @@ class CompanyFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // Loops through the iterable_expression array. 
-        // On each iteration, the value of the current element is assigned to $departments.
         foreach (self:: DEPARTMENT_OF_COMPANY as $departments) {
-            //Create Company
             $company = new Company();
             $company->setDepartmentName($departments["name"]);
             $company->setEmail($departments["email"]);
-            // Tell Doctrine that we want to (eventually) register the product (no request yet)
             $manager->persist($company);
         }
-        // Actually executes the queries (i.e. the INSERT query)
         $manager->flush();
     }
 }
