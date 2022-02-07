@@ -21,12 +21,22 @@ class ContactController extends AbstractController
      *
      * @param EntityManagerInterface $entityManager;
      * @param MailerService $mailerService
-     * 
      */
     public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService)
     {
         $this->entityManager = $entityManager;
         $this-> mailerService = $mailerService;
+    }
+
+    /**
+     * This controller displays the homepage to browse the contact card and see all the contacts
+     *
+     * @return Response
+     */
+    #[Route('/', name: 'home_contact')]
+    public function homepage(): Response
+    {
+        return $this->render('contact/homepage.html.twig');
     }
 
     /**
@@ -36,20 +46,18 @@ class ContactController extends AbstractController
      * @return Response
      */
     #[Route('/fiche-contact', name: 'fiche_contact')]
-    public function contact(Request $request): Response
+    public function createContact(Request $request): Response
     {
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);
-
-        // Retrives some data
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $contact = $form->getData();
+
             $this->entityManager->persist($contact);
             $this->entityManager->flush();
 
-            //Mailer service
             $this->mailerService->send(
                 from: $contact->getEmail(),
                 to: $contact->getDepartment()->getEmail(),
@@ -63,12 +71,10 @@ class ContactController extends AbstractController
                     "message" => $contact->getMessage(),
                 ]
             );
-
             $this->addFlash("success", "Votre mail à bien été envoyé. Merci de nous avoir contacté. Un arbre de plus sera planté grâce à vous!");
             return $this->redirectToRoute('home');
         }
-
-        return $this->render('contact/fiche-contact.html.twig', [
+        return $this->render('contact/fiche_contact.html.twig', [
             "form" => $form->createView()
         ]);
     }
