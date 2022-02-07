@@ -14,7 +14,7 @@ class Company
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
@@ -24,17 +24,17 @@ class Company
         minMessage: 'Le nom du département entreprise doit comporter au moins {{ limit }} caractères',
         maxMessage: 'Le nom du département entreprise ne peut pas dépasser {{ limit }} caractères.',
     )]
-    private $departmentName;
+    private string $departmentName;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Email(
         message: "L'e-mail {{ value }} n'est pas un e-mail valide.",
     )]
-    private $email;
+    private string $email;
 
     #[ORM\OneToMany(mappedBy: 'department', targetEntity: Contact::class)]
-    private $contacts;
+    private collection $contacts;
 
     public function __construct()
     {

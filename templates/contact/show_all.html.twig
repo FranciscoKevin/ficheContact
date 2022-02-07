@@ -4,7 +4,7 @@
 {% block title %}{{ parent() }} - Tous les contacts{% endblock %}
 
 {% block body %}
-    <h1>Les contacts enregistrer</h1>
+    <h1>Les contacts enregistrés</h1>
     {# Table #}
     <table class="table">
         <thead>
@@ -16,7 +16,6 @@
             </tr>
         </thead>
         <tbody>
-        {# Loop on all contacts display retrieved data in controller #}
         {% for contact in contacts %}
             <tr>
              {# variable twig used to display the data retrieved the informations #}
