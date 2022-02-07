@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * Homepage
+     * This controller displays the home page to browse the contact card and see all the contacts
      *
      * @return Response
      */

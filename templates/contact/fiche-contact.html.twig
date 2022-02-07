@@ -22,10 +22,6 @@
                 </div>
                 {# Contact form #}
                 <div class="col-md-6">
-                    {# 
-                        form is a variable passed from the controller via either
-                        $this->renderForm('...', ['form' => $form]) or $this->render('...', ['form' => $form->createView()]) 
-                    #}
                     {{ form_start(form) }}
                         <div class ="row">
                             {# render a field row #}
