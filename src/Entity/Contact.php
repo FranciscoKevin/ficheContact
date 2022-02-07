@@ -12,7 +12,7 @@ class Contact
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
@@ -22,7 +22,7 @@ class Contact
         minMessage: 'Votre prénom doit comporter au moins {{ limit }} caractères.',
         maxMessage: 'Votre prénom ne peut pas dépasser {{ limit }} caractères.',
     )]
-    private $firstname;
+    private string $firstname;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
@@ -32,7 +32,7 @@ class Contact
         minMessage: 'Votre nom doit comporter au moins {{ limit }} caractères.',
         maxMessage: 'Votre nom ne peut pas dépasser {{ limit }} caractères.',
     )]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
@@ -47,11 +47,11 @@ class Contact
         min: 5,
         minMessage: 'Votre message doit comporter au moins {{ limit }} caractères',
     )]
-    private $message;
+    private string $message;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'contacts')]
     #[Assert\NotNull]
-    private $department;
+    private Company $department;
 
     public function getId(): ?int
     {

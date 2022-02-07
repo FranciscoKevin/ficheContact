@@ -4,32 +4,29 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\ContactType;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
-
 
 class ContactController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+    private MailerService $mailerService;
 
     /**
-     * @var MailerInterface
+     * ContactController constructor.
+     *
+     * @param EntityManagerInterface $entityManager;
+     * @param MailerService $mailerService
+     * 
      */
-    private $mailer;
-
-    // Dependency Injections
-    public function __construct(EntityManagerInterface $entityManager, MailerInterface $mailer)
+    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService)
     {
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this-> mailerService = $mailerService;
     }
 
     /**
@@ -41,7 +38,6 @@ class ContactController extends AbstractController
     #[Route('/fiche-contact', name: 'fiche_contact')]
     public function contact(Request $request): Response
     {
-        // Set up a fresh $contact object 
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);
 
@@ -49,29 +45,25 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$contact variable has also been updated
             $contact = $form->getData();
             $this->entityManager->persist($contact);
-            // Flush the persisted object
             $this->entityManager->flush();
 
-            //Create object Mailer
-            $email = (new Email())
-                ->from($contact->getEmail())
-                ->to($contact->getDepartment()->getEmail())
-                ->subject("Nouveau mail au pole " . $contact->getDepartment()->getDepartmentName())
-                //Templating email with data
-                ->html($this->renderView('contact/email.html.twig', [
-                    'fullname' => $contact->getName(). " " .$contact->getFirstname(),
+            //Mailer service
+            $this->mailerService->send(
+                from: $contact->getEmail(),
+                to: $contact->getDepartment()->getEmail(),
+                subject: "Nouveau mail au pole " . $contact->getDepartment()->getDepartmentName(),
+                template: "contact/email.html.twig",
+                parameters:
+                [
+                    "fullname" => $contact->getName(). " " .$contact->getFirstname(),
                     "email" => $contact->getEmail(),
                     "department" => $contact->getDepartment()->getDepartmentName(),
-                    "message" => $contact->getMessage()
-            ]));
-            // Send mail
-            $this->mailer->send($email);
+                    "message" => $contact->getMessage(),
+                ]
+            );
 
-            //Message flash after submit email
             $this->addFlash("success", "Votre mail à bien été envoyé. Merci de nous avoir contacté. Un arbre de plus sera planté grâce à vous!");
             return $this->redirectToRoute('home');
         }
@@ -86,10 +78,10 @@ class ContactController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/contact/index', name: 'contact_index', methods: ['GET'])]
-    public function index(): Response
+    #[Route('/contact/tous-les-contacts', name: 'show_all_contact', methods: ['GET'])]
+    public function showAllContact(): Response
     {
-        return $this->render('contact/index.html.twig', [
+        return $this->render('contact/show_all.html.twig', [
             'contacts' => $this->entityManager->getRepository(Contact::class)->findAll(),
         ]);
     }
@@ -99,8 +91,8 @@ class ContactController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/contact/{id}', name: 'contact_details', methods: ['GET'])]
-    public function show(Contact $contact): Response
+    #[Route('/contact/details/{id}', name: 'contact_details', methods: ['GET'])]
+    public function contactDetails(Contact $contact): Response
     {
         return $this->render('contact/details.html.twig', [
             'contact' => $contact,
